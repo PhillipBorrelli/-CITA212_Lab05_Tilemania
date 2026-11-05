@@ -3,6 +3,7 @@ using UnityEngine;
 public class CoinPickUp : MonoBehaviour
 {
     [SerializeField] AudioClip coinPickupSFX;
+    [SerializeField] int pointsForCoinPickup = 100;
 
     bool wasCollected = false;
     void OnTriggerEnter2D(Collider2D other)
@@ -10,6 +11,7 @@ public class CoinPickUp : MonoBehaviour
         if (other.CompareTag("Player") && !wasCollected)
         {
             wasCollected = true;
+            FindAnyObjectByType<GameSession>().AddToScore(pointsForCoinPickup);
             AudioSource.PlayClipAtPoint(coinPickupSFX, transform.position);
             gameObject.SetActive(false);
             Destroy(gameObject);
