@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSession : MonoBehaviour
 {
+    [SerializeField] int playerLives = 3;
     [System.Obsolete]
     void Awake()
     {
@@ -17,7 +19,30 @@ public class GameSession : MonoBehaviour
         }
     }
 
-   
+    public void ProcessPlayerDeath()
+    {
+        if (playerLives > 1)
+        {
+            Takelife();
+        }
+        else
+        {
+            ResetGameSession();
+        }
+    }
+
+    void Takelife()
+    {
+        playerLives--;
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    void ResetGameSession()
+    {
+        SceneManager.LoadScene(0);
+        Destroy(gameObject);
+    }
 
     void Start()
     {
